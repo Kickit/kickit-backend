@@ -1,17 +1,26 @@
 'use strict'
 
 const Hapi = require('hapi')
-const { graphqlHapi } = require('apollo-server-hapi')
+const { graphqlHapi, graphiqlHapi } = require('apollo-server-hapi')
 const mongoose = require('mongoose')
+const { makeExecutableSchema } = require('graphql-tools');
 
 const HOST = 'localhost'
 const PORT = 3000
 
 
 const User = require('./models/user')
+const Proj = require('./models/project')
+const Sect = require('./models/section')
+const Task = require('./models/task')
 
 const myGraphQLSchema = require('./graphql/schema')
 const createResolvers = require('./graphql/resolvers')
+
+const executableSchema = makeExecutableSchema({
+    typeDefs: [myGraphQLSchema],
+    resolvers: createResolvers({ User }),
+});
 
 mongoose.connect('mongodb://localhost:27017/kickit_db1');
 
@@ -26,11 +35,21 @@ const init = async () => {
     options: {
       path: '/graphql',
       graphqlOptions: {
-        schema: myGraphQLSchema,
+        schema: executableSchema,
       },
       route: {
         cors: true,
       },
+    },
+  })
+
+  await server.register({
+    plugin: graphiqlHapi,
+    options: {
+        path: '/graphiql',
+        graphiqlOptions: {
+            endpointURL: '/graphql',
+        },
     },
   })
 
