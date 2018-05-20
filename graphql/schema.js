@@ -2,6 +2,8 @@ const schema = `
   type User {
     id: ID!
     email: String!
+    first: String!
+    last: String!
   }
 
   type Query {
