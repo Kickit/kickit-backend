@@ -16,6 +16,7 @@ const resolvers = (models) => ({
     createProj(root, args) {
       console.log(root,args)
       const proj = new models.Project(args);
+      proj.created = Math.floor(new Date() / 1000)
       return proj.save().then((response) => response);
     },
     createSect(root, args) {
@@ -24,6 +25,7 @@ const resolvers = (models) => ({
     },
     createTask(root, args) {
       const task = new models.Task(args);
+      task.created = Math.floor(new Date() / 1000)
       return task.save().then((response) => response);
     },
   },

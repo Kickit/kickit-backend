@@ -9,7 +9,7 @@ const schema = `
   type Project {
     id: String!
     title: String
-    created: Int
+    created: Int!
     owners: [User]
   }
 
@@ -39,7 +39,7 @@ const schema = `
 
   type Mutation {
     createUser(email: String!): User
-    createProj(email: String!): Project
+    createProj(title: String!): Project
     createSect(email: String!): Section
     createTask(email: String!): Task
   }
