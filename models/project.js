@@ -8,6 +8,11 @@ const projectSchema = new mongoose.Schema({
     unique: false,
     required: true,
   },
+  created: {
+    type: Number,
+    unique: false,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('Project', projectSchema);

@@ -6,13 +6,23 @@ const schema = `
     last: String!
   }
 
+  type Project {
+    id: String
+    title: String
+    created: Int
+    owners: [User]
+  }
+
   type Query {
     getUserById(id: ID!): User
     getUserByEmail(email: String!): User
+
+    getProjById(id: ID!): Project
   }
 
   type Mutation {
     createUser(email: String!): User
+    createProj(email: String!): User
   }
 
   schema {
