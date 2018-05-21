@@ -33,15 +33,15 @@ const schema = `
     getUserByEmail(email: String!): User
 
     getProjById(id: ID!): Project
-
     getSectById(id: ID!): Section
-
     getTaskById(id: ID!): Task
   }
 
   type Mutation {
     createUser(email: String!): User
-    createProj(email: String!): User
+    createProj(email: String!): Project
+    createSect(email: String!): Section
+    createTask(email: String!): Task
   }
 
   schema {
