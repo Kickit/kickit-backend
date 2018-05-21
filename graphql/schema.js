@@ -13,11 +13,19 @@ const schema = `
     owners: [User]
   }
 
+  type Section {
+    id: String
+    title: String
+    position: Int
+  }
+
   type Query {
     getUserById(id: ID!): User
     getUserByEmail(email: String!): User
 
     getProjById(id: ID!): Project
+
+    getSectById(id: ID!): Section
   }
 
   type Mutation {
