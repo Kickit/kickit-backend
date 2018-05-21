@@ -7,16 +7,25 @@ const schema = `
   }
 
   type Project {
-    id: String
+    id: String!
     title: String
     created: Int
     owners: [User]
   }
 
   type Section {
-    id: String
+    id: String!
     title: String
     position: Int
+  }
+
+  type Task {
+    id: String!
+    title: String!
+    description: String
+    created: Int!
+    due: Int
+    completed: Boolean!
   }
 
   type Query {
@@ -26,6 +35,8 @@ const schema = `
     getProjById(id: ID!): Project
 
     getSectById(id: ID!): Section
+
+    getTaskById(id: ID!): Task
   }
 
   type Mutation {
