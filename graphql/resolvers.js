@@ -1,7 +1,6 @@
 const resolvers = (models) => ({
   User: {
     async projects(user) {
-      console.log(user)
       return await models.Project.find(
         {
            _id: { $in: user.projects }
@@ -29,17 +28,13 @@ const resolvers = (models) => ({
       return user.save().then((response) => response);
     },
     async createProj(root, args) {
-      console.log(root,args)
       const proj = new models.Project(args);
       proj.owners = [args.owner]
       let owner = await models.User.findById(args.owner)
       owner.projects.push(proj._id)
-      console.log('need to update', owner)
       await models.User.update({ _id: args.owner} , { $set: {projects: owner.projects} })
       proj.created = Math.floor(new Date() / 1000)
       proj.owners = [args.owner]
-      console.log(proj)
-      console.log(owner)
       return proj.save().then((response) => response);
     },
     createSect(root, args) {
