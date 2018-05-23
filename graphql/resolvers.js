@@ -28,14 +28,19 @@ const resolvers = (models) => ({
       return user.save().then((response) => response);
     },
     async createProj(root, args) {
+
+      //Create and save project based on arguments
       const proj = new models.Project(args);
-      proj.owners = [args.owner]
-      let owner = await models.User.findById(args.owner)
-      owner.projects.push(proj._id)
-      await models.User.update({ _id: args.owner} , { $set: {projects: owner.projects} })
       proj.created = Math.floor(new Date() / 1000)
-      proj.owners = [args.owner]
-      return proj.save().then((response) => response);
+      await proj.save()
+
+      console.log(proj._id)
+      //Pushes new project ID into the projects array of the owners specified
+      await models.User.update(
+        { email: { $in: proj.owners } },
+        { $push: { projects: models.ObjectId(proj._id) } }
+      )
+      return proj
     },
     createSect(root, args) {
       debugger
