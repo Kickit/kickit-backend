@@ -4,6 +4,7 @@ const schema = `
     email: String!
     first: String!
     last: String!
+    projects: [Project]
   }
 
   type Project {
@@ -39,9 +40,9 @@ const schema = `
 
   type Mutation {
     createUser(email: String!): User
-    createProj(title: String!): Project
-    createSect(email: String!): Section
-    createTask(email: String!): Task
+    createProj(owner: String! title: String): Project
+    createSect(projectId: ID!): Section
+    createTask(sectionId: ID!): Task
   }
 
   schema {
