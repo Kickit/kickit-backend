@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 const { makeExecutableSchema } = require('graphql-tools');
 
 const HOST = 'localhost'
-const PORT = 3000
+const PORT = 3030
 
 
 const User    = require('./models/user')

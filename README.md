@@ -21,7 +21,7 @@ There has also been a implementation done in Golang but development has been pau
 - `cd kickit-backend`
 - `yarn`
 - `yarn start`
-- the server will be available at localhost:3000
+- the server will be available at localhost:3030
 
 #### Routes for development:
 
