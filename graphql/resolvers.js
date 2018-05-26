@@ -1,3 +1,8 @@
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+//const { APP_SECRET, getUserId } = require('../utils')
+
+
 const resolvers = (models) => ({
   User: {
     async projects(user) {
@@ -27,6 +32,54 @@ const resolvers = (models) => ({
       const user = new models.User(args);
       return user.save().then((response) => response);
     },
+
+    //@nicklewanowicz temporary! Will change to have server sessions
+    async signup(root, args) {
+      // Check if user already signed up
+      let user = await models.User.findOne( {email: args.email} )
+      if (user) {
+        throw new Error(`User with email '${user.email}' exists`)
+      }
+
+      //Bcrypt and save user document
+      const password = await bcrypt.hash(args.password, 10)
+      args.password = password
+
+      user = new models.User(args)
+      user = await user.save()
+    
+      //Sign jwt token for user
+      const token = jwt.sign({ userId: user.id }, APP_SECRET)
+    
+      return {
+        token,
+        user,
+      }
+    },
+    
+    //@nicklewanowicz temporary! Will change to have server sessions
+    async login(root, args) {
+      //Verify user record exists in DB
+      const user = await models.User.findOne( {email: args.email} )
+      if (!user) {
+        throw new Error('No such user found')
+      }
+    
+      //Authenticate password
+      const valid = await bcrypt.compare(args.password, user.password)
+      if (!valid) {
+        throw new Error('Invalid password')
+      }
+      
+      //Sign session token
+      const token = jwt.sign({ userId: user.id }, APP_SECRET)
+    
+      return {
+        token,
+        user,
+      }
+    },
+
     async createProj(root, args) {
 
       //Create and save project based on arguments
