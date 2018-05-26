@@ -28,11 +28,6 @@ const resolvers = (models) => ({
     }
   },
   Mutation: {
-    createUser(root, args) {
-      const user = new models.User(args);
-      return user.save().then((response) => response);
-    },
-
     //@nicklewanowicz temporary! Will change to have server sessions
     async signup(root, args) {
       // Check if user already signed up
