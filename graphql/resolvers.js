@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-//const { APP_SECRET, getUserId } = require('../utils')
+const { APP_SECRET, getUserId } = require('../utils')
 
 
 const resolvers = (models) => ({
@@ -41,7 +41,7 @@ const resolvers = (models) => ({
       args.password = password
 
       user = new models.User(args)
-      user = await user.save()
+      await user.save()
     
       //Sign jwt token for user
       const token = jwt.sign({ userId: user.id }, APP_SECRET)
