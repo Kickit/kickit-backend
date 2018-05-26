@@ -44,7 +44,7 @@ const schema = `
   }
 
   type Mutation {
-    signup(email: String!, password: String!, name: String!): AuthPayload
+    signup(first: String!, last: String!, email: String!, password: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
 
     createProj(owners: [String!] title: String): Project

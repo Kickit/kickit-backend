@@ -8,12 +8,17 @@ const userSchema = new mongoose.Schema({
   },
   first: {
     type: String,
-    unique: true,
+    unique: false,
     required: true,
   },
   last: {
     type: String,
-    unique: true,
+    unique: false,
+    required: true,
+  },
+  password: {
+    type: String,
+    unique: false,
     required: true,
   },
   projects: [{ 
