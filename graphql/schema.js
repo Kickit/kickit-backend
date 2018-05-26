@@ -7,6 +7,11 @@ const schema = `
     projects: [Project]
   }
 
+  type AuthPayload {
+    token: String
+    user: User
+  }
+
   type Project {
     id: String!
     title: String
@@ -40,6 +45,9 @@ const schema = `
 
   type Mutation {
     createUser(email: String!): User
+    signup(email: String!, password: String!, name: String!): AuthPayload
+    login(email: String!, password: String!): AuthPayload
+    
     createProj(owners: [String!] title: String): Project
     createSect(projectId: ID!): Section
     createTask(sectionId: ID!): Task
