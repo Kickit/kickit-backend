@@ -57,13 +57,12 @@ const resolvers = (models) => ({
       //Verify user record exists in DB
       const user = await models.User.findOne( {email: args.email} )
       if (!user) {
-        throw new Error('No such user found')
+        throw new Error('Invalid Login')
       }
-    
       //Authenticate password
       const valid = await bcrypt.compare(args.password, user.password)
       if (!valid) {
-        throw new Error('Invalid password')
+        throw new Error('Invalid Login')
       }
       
       //Sign session token
@@ -81,8 +80,6 @@ const resolvers = (models) => ({
       const proj = new models.Project(args);
       proj.created = Math.floor(new Date() / 1000)
       await proj.save()
-
-      console.log(proj._id)
       //Pushes new project ID into the projects array of the owners specified
       await models.User.update(
         { email: { $in: proj.owners } },
