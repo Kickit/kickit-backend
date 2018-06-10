@@ -1,4 +1,10 @@
 const schema = `
+
+  type AuthPayload {
+    token: String
+    user: User
+  }
+  
   type User {
     id: ID!
     email: String!
@@ -7,28 +13,26 @@ const schema = `
     projects: [Project]
   }
 
-  type AuthPayload {
-    token: String
-    user: User
-  }
-
   type Project {
-    id: String!
+    id: ID!
     title: String
     created: Int!
     owners: [User]
+    sections: [Section]
   }
 
   type Section {
-    id: String!
+    id: ID!
     title: String
     position: Int
+    tasks: [Task]
   }
 
   type Task {
-    id: String!
+    id: ID!
     title: String!
     description: String
+    tasks: [Task]
     created: Int!
     due: Int
     completed: Boolean!
