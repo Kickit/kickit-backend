@@ -17,8 +17,7 @@ const findRecords = async (model, ids) => {
 }
 
 const findRefs = async (model, attr, id) => {
-    const key = `${key}.$id`
-    return await model.find({key: id})
+    return await model.where(attr).equals(id)
 }
 
 const findAll = async(model, attr) => {
@@ -35,6 +34,7 @@ const updateRecord = (model, attrs) => {
 }
 
 const createProject = async (attrs) => {
+    // Todo: validate you are an owner of the project
     const record = await saveRecord(Project, attrs)
     await User.update(
         { _id: { $in: record.owners } },
@@ -44,5 +44,14 @@ const createProject = async (attrs) => {
       return record
 }
 
+const createSection = async (attrs) => {
+    // Todo: validate you are an owner of the project
+    const projectRef = findRecord(Project, attrs.project)
+    if (projectRef) {
+        return await saveRecord(Section, attrs)
+    }
+    throw Error(`Section is referencing Project ${attrs.project} which doesn't exist.`)
+}
 
-module.exports =  { findRecord, findAll, saveRecord, updateRecord, createProject, findRecords, findRefs}
+
+module.exports =  { findRecord, findRecords, findAll, saveRecord, findRefs, updateRecord, createProject, createSection } 
