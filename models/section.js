@@ -6,6 +6,16 @@ const sectionSchema = new mongoose.Schema({
     unique: false,
     required: true,
   },
+  project: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Project',
+    index: true
+  },
+  task: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Task',
+    index: true
+  },
   position: {
     type: Number,
     unique: false,

@@ -6,6 +6,11 @@ const taskSchema = new mongoose.Schema({
     unique: false,
     required: true,
   },
+  section: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Section',
+    index: true
+  },
   description: {
     type: String,
     unique: false,
