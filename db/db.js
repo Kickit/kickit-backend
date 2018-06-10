@@ -9,7 +9,11 @@ const findRecord = async (model, id) => {
 }
 
 const findRecords = async (model, ids) => {
-
+    return await model.find(
+        {
+           _id: { $in: ids }
+        }
+     )
 }
 
 const findAll = async(model, attr) => {
