@@ -11,6 +11,18 @@ const resolvers = (models) => ({
     },
   },
 
+  Project: {
+    async sections(project) {
+      return await db.findRecords(models.Section, project.sections)
+    },
+  },
+
+  Section: {
+    async tasks(section) {
+      return await db.findRecords(models.Task, section.tasks)
+    },
+  },
+
   Query: {
     getUserById(root, { id }) {
       return db.findRecord(models.User, id)
@@ -23,13 +35,15 @@ const resolvers = (models) => ({
     getProjById(root, { projectId }) {
       return db.findRecord(models.Project, id)
     },
-    async getUser(root, args, userId) {
+    async getUser(root, args, context) {
+      const userId = getUserId(context)
       return await models.User.findById(userId)
     }
   },
   Mutation: {
     //@nicklewanowicz temporary! Will change to have server sessions
     async signup(root, args) {
+      console.log(args)
       let user = await models.User.findOne( {email: args.email} )
       if (user) {
         throw new Error(`User with email '${user.email}' exists`)

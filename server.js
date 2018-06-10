@@ -37,7 +37,7 @@ const init = async () => {
       path: '/graphql',
       graphqlOptions: request => ({
         schema: executableSchema,
-        context: getUserId(request) 
+        context: request 
       }),
       route: {
         cors: true,
