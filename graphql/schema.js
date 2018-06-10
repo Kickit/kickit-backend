@@ -35,6 +35,7 @@ const schema = `
   }
 
   type Query {
+    getUser: User
     getUserById(id: ID!): User
     getUserByEmail(email: String!): User
 
@@ -47,7 +48,7 @@ const schema = `
     signup(first: String!, last: String!, email: String!, password: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
 
-    createProj(owners: [String!] title: String): Project
+    createProject(owners: [String!] title: String!): Project
     createSect(projectId: ID!): Section
     createTask(sectionId: ID!): Task
   }

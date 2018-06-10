@@ -17,6 +17,10 @@ const projectSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Section' 
   }],
+  owners: [{
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Project' 
+  }]
 });
 
 module.exports = mongoose.model('Project', projectSchema);
