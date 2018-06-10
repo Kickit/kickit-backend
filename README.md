@@ -7,7 +7,7 @@ This repo will serve as the primary backend for the <b>Kickit Open Source Projec
 - MongoDB
 
 
-There has also been a implementation done in Golang but development has been paused in favour of pursueing a full JS stack with the kickit [web-app](http://www.github.com/nicklewanowicz/kickit-frontend) and [mobile-app]() being react and react-native based respectively. 
+There has also been a implementation done in Golang but development has been paused in favour of pursueing a full JS stack with the kickit [web-app](http://www.github.com/kickit/kickit-frontend) and [mobile-app]() being react and react-native based respectively. 
 
 ## Installation:
 
