@@ -27,8 +27,7 @@ const resolvers = (models) => ({
     getProjById(root, { projectId }) {
       return db.findRecord(models.Project, id)
     },
-    async getUser(root, args) {
-      const userId = getUserId(args.headers)
+    async getUser(root, args, userId) {
       return await models.User.findById(userId)
     }
   },
