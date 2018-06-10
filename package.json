@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Kickit Backend with Hapi.js",
   "main": "index.js",
-  "repository": "https://github.com/NickLewanowicz/kickit-backend",
+  "repository": "https://github.com/kickit/kickit-backend",
   "author": "Nicholas Lewanowicz",
   "license": "MIT",
   "dependencies": {
