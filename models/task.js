@@ -4,7 +4,7 @@ const taskSchema = new mongoose.Schema({
   title: {
     type: String,
     unique: false,
-    required: true,
+    default: ''
   },
   section: { 
     type: mongoose.Schema.Types.ObjectId, 
@@ -14,7 +14,7 @@ const taskSchema = new mongoose.Schema({
   description: {
     type: String,
     unique: false,
-    required: false,
+    default: ''
   },
   created: {
     type: Number,
@@ -24,12 +24,12 @@ const taskSchema = new mongoose.Schema({
   due: {
     type: Number,
     unique: false,
-    required: true,
+    default: null,
   },
   completed: {
     type: Boolean,
     unique: false,
-    required: true,
+    default: false,
   },
 });
 

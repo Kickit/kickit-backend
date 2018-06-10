@@ -15,7 +15,7 @@ const projectSchema = new mongoose.Schema({
   },
   owners: [{
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Project' 
+    ref: 'User' 
   }]
 });
 
