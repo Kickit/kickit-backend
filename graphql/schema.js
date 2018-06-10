@@ -54,7 +54,7 @@ const schema = `
 
     createProject(owners: [ID] title: String!): Project
     createSection(project: ID, task: ID, title: String, position: Int): Section
-    createTask(sectionId: ID!, title: String, description: String, due: Int, completed: Boolean): Task
+    createTask(section: ID!, title: String, description: String, due: Int, completed: Boolean): Task
   }
 
   schema {

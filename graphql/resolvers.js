@@ -13,7 +13,6 @@ const resolvers = (models) => ({
 
   Project: {
     async sections(project) {
-      console.log(project.id)
       return await db.findRefs(models.Section, 'project', project.id)
     },
   },
@@ -51,7 +50,6 @@ const resolvers = (models) => ({
   Mutation: {
     //@nicklewanowicz temporary! Will change to have server sessions
     async signup(root, args) {
-      console.log(args)
       let user = await models.User.findOne( {email: args.email} )
       if (user) {
         throw new Error(`User with email '${user.email}' exists`)
