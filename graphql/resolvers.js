@@ -1,3 +1,4 @@
+const db = require('../db/db')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { APP_SECRET, getUserId } = require('../utils')
@@ -16,15 +17,19 @@ const resolvers = (models) => ({
 
   Query: {
     getUserById(root, { id }) {
-      return models.User.findById(id).then((response) => response);
+      return db.findRecord(models.User, id)
     },
 
     async getUserByEmail(root, { email }) {
       return await models.User.findOne({ email })
     },
 
-    async getProjById(root, { projectId }) {
-      return await models.Project.findById(projectId)
+    getProjById(root, { projectId }) {
+      return db.findRecord(models.Project, id)
+    },
+    async getUser(root, args) {
+      const userId = getUserId(args.headers)
+      return await models.User.findById(userId)
     }
   },
   Mutation: {
@@ -74,18 +79,9 @@ const resolvers = (models) => ({
       }
     },
 
-    async createProj(root, args) {
-
-      //Create and save project based on arguments
-      const proj = new models.Project(args);
-      proj.created = Math.floor(new Date() / 1000)
-      await proj.save()
-      //Pushes new project ID into the projects array of the owners specified
-      await models.User.update(
-        { email: { $in: proj.owners } },
-        { $push: { projects: models.ObjectId(proj._id) } }
-      )
-      return proj
+    async createProject(root, args) {
+      args.created = Math.floor(new Date() / 1000)
+      return await db.createProject(args)
     },
     createSect(root, args) {
       debugger

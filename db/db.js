@@ -36,4 +36,4 @@ const createProject = async (attrs) => {
 }
 
 
-module.exports =  { findRecord, findAll, saveRecord, updateRecord, createProject,findRecords }
+module.exports =  { findRecord, findAll, saveRecord, updateRecord, createProject, findRecords }
