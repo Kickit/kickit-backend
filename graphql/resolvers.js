@@ -13,6 +13,7 @@ const resolvers = (models) => ({
 
   Project: {
     async sections(project) {
+      console.log(project.id)
       return await db.findRefs(models.Section, 'project', project.id)
     },
   },
@@ -90,16 +91,23 @@ const resolvers = (models) => ({
       }
     },
 
-    async createProject(root, args) {
+    async createProject(root, args, context) {
+      const userId = getUserId(context)
+      args.owners.push(userId)
+      // args.owners= JSON.stringify(args.owners)
       args.created = Math.floor(new Date() / 1000)
       return await db.createProject(args)
     },
 
-    createSect(root, args) {
-      debugger
-      const sect = new models.Section(args);
-      return sect.save().then((response) => response);
+    async createSection(root, args) {
+      if (args.position === undefined) {
+        const sections = await db.findRefs(models.Section, 'project', args.project)
+        console.log(sections)
+        args.position = sections.length
+      }
+      return await db.createSection(args)
     },
+
     createTask(root, args) {
       const task = new models.Task(args);
       task.created = Math.floor(new Date() / 1000)
