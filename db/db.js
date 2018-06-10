@@ -16,6 +16,11 @@ const findRecords = async (model, ids) => {
      )
 }
 
+const findRefs = async (model, attr, id) => {
+    const key = `${key}.$id`
+    return await model.find({key: id})
+}
+
 const findAll = async(model, attr) => {
 
 }
@@ -40,4 +45,4 @@ const createProject = async (attrs) => {
 }
 
 
-module.exports =  { findRecord, findAll, saveRecord, updateRecord, createProject, findRecords }
+module.exports =  { findRecord, findAll, saveRecord, updateRecord, createProject, findRecords, findRefs}

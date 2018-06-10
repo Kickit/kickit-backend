@@ -13,13 +13,20 @@ const resolvers = (models) => ({
 
   Project: {
     async sections(project) {
-      return await db.findRecords(models.Section, project.sections)
+      return await db.findRefs(models.Section, 'project', project.id)
     },
   },
 
   Section: {
     async tasks(section) {
-      return await db.findRecords(models.Task, section.tasks)
+      return await db.findRefs(models.Task, 'section', section.id)
+    },
+  },
+
+  Task: {
+    async tasks(task) {
+      const section = await db.findRefs(models.Section, 'task', task.id)
+      return await db.findRefs(models.task, 'section', section.id)
     },
   },
 
