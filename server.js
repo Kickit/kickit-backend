@@ -46,10 +46,10 @@ const init = async () => {
   await server.register({
     plugin: graphiqlHapi,
     options: {
-        path: '/graphiql',
-        graphiqlOptions: {
-            endpointURL: '/graphql',
-        },
+      path: '/graphiql',
+      graphiqlOptions: {
+        endpointURL: '/graphql',
+      },
     },
   })
 
