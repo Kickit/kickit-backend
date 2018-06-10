@@ -4,6 +4,7 @@ const Hapi = require('hapi')
 const { graphqlHapi, graphiqlHapi } = require('apollo-server-hapi')
 const mongoose = require('mongoose')
 const { makeExecutableSchema } = require('graphql-tools');
+const { getUserId } = require('./utils')
 
 const HOST = 'localhost'
 const PORT = 3030
@@ -34,9 +35,10 @@ const init = async () => {
     plugin: graphqlHapi,
     options: {
       path: '/graphql',
-      graphqlOptions: {
+      graphqlOptions: request => ({
         schema: executableSchema,
-      },
+        context: getUserId(request) 
+      }),
       route: {
         cors: true,
       },
@@ -48,6 +50,7 @@ const init = async () => {
     options: {
       path: '/graphiql',
       graphiqlOptions: {
+        passHeader: '"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YjFjMzg1NGQ3Yzk4ZDNkMzJmOTYxZmQiLCJpYXQiOjE1Mjg1NzYwODR9.CVF0DRe24HT7ZLzG7K6v_6WYUcGx5wu-lOWIietGb5k"',
         endpointURL: '/graphql',
       },
     },
