@@ -38,13 +38,19 @@ const resolvers = (models) => ({
     async getUserByEmail(root, { email }) {
       return await models.User.findOne({ email })
     },
-
-    getProjById(root, { projectId }) {
-      return db.findRecord(models.Project, id)
-    },
-    async getUser(root, args, context) {
+    
+    async me(root, args, context) {
       const userId = getUserId(context)
       return await models.User.findById(userId)
+    },
+
+    async project(root, { id }, context) {
+      const userId = getUserId(context)
+      const project = await db.findRecord(models.Project, id)
+      if (project.owners.includes(userId)) {
+        return project
+      }
+      throw new Error(`Unauthorized Action`)
     }
   },
   Mutation: {

@@ -39,13 +39,13 @@ const schema = `
   }
 
   type Query {
-    getUser: User
+    me: User
     getUserById(id: ID!): User
     getUserByEmail(email: String!): User
 
-    getProjById(id: ID!): Project
-    getSectById(id: ID!): Section
-    getTaskById(id: ID!): Task
+    project(id: ID!): Project
+    section(id: ID!): Section
+    task(id: ID!): Task
   }
 
   type Mutation {

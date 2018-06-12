@@ -15,7 +15,10 @@
     "jsonwebtoken": "^8.2.1",
     "mongoose": "^5.1.1"
   },
+  "devDependencies": {
+    "nodemon": "^1.17.0"
+  },
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js"
   }
 }
