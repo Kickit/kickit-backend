@@ -47,7 +47,7 @@ const resolvers = (models) => ({
     async project(root, { id }, context) {
       const userId = getUserId(context)
       const project = await db.findRecord(models.Project, id)
-      if (project.owners.includes(userId)) {
+      if (project.owners.indexOf(userId) > -1) {
         return project
       }
       throw new Error(`Unauthorized Action`)
