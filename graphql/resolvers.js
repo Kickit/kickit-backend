@@ -129,6 +129,11 @@ const resolvers = (models) => ({
       task.created = Math.floor(new Date() / 1000)
       return task.save().then((response) => response);
     },
+
+    async updateTask(root, args, context) {
+      const userId = getUserId(context)
+      return await db.updateRecord(models.Task, args)
+    },
   },
 });
 

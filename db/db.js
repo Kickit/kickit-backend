@@ -29,8 +29,10 @@ const saveRecord = async (model, attrs) => {
     return await record.save()
 }
 
-const updateRecord = (model, attrs) => {
-
+const updateRecord = async (model, attrs) => {
+    let record = await findRecord(model, attrs.id)
+    record.set(attrs)
+    return await record.save()
 }
 
 const createProject = async (attrs) => {
