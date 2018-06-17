@@ -8,7 +8,7 @@ function getUserId(context) {
     const { userId } = jwt.verify(token, APP_SECRET)
     return userId
   }
-  return ""
+  return userId
 }
 
 module.exports = {
