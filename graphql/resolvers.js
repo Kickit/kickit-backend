@@ -124,10 +124,12 @@ const resolvers = (models) => ({
       return await db.createSection(args)
     },
 
-    createTask(root, args) {
-      const task = new models.Task(args);
-      task.created = Math.floor(new Date() / 1000)
-      return task.save().then((response) => response);
+    async createTask(root, args, context) {
+      const userId = getUserId(context)
+      if (await db.userOwnsSection(args.section, userId)) {
+        return await db.createTask(args)
+      }
+      throw new Error('Unauthorized Action')
     },
 
     async updateTask(root, args, context) {

@@ -55,5 +55,28 @@ const createSection = async (attrs) => {
     throw Error(`Section is referencing Project ${attrs.project} which doesn't exist.`)
 }
 
+const createTask = async (attrs) => {
+    // Todo: validate you are an owner of the project
+    attrs.created = Math.floor(new Date() / 1000)
+    
+    const sectionRef = findRecord(Section, attrs.section)
+    if (sectionRef) {
+        return await saveRecord(Task, attrs)
+    }
+    throw Error(`Task is referencing Section ${attrs.section} which doesn't exist.`)
+}
 
-module.exports =  { findRecord, findRecords, findAll, saveRecord, findRefs, updateRecord, createProject, createSection } 
+// userOwnsTask: checks user permissions to verify if theyre owner of that section
+const userOwnsSection = async (sectionId, userId) => {
+    const section = await findRecord(Section, sectionId)
+    const project = await findRecord(Project, section.project)
+
+    // check if userId is in project's owners array
+    if (project.owners.indexOf(userId) > -1) {
+        return true
+    }
+    else return false
+}
+
+
+module.exports =  { findRecord, findRecords, findAll, saveRecord, findRefs, updateRecord, createProject, createSection, createTask, userOwnsSection } 
