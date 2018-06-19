@@ -57,9 +57,11 @@ const createSection = async (attrs) => {
 
 const createTask = async (attrs) => {
     // Todo: validate you are an owner of the project
+    attrs.created = Math.floor(new Date() / 1000)
+    
     const sectionRef = findRecord(Section, attrs.section)
     if (sectionRef) {
-        return await saveRecord(Section, attrs.section)
+        return await saveRecord(Task, attrs)
     }
     throw Error(`Task is referencing Section ${attrs.section} which doesn't exist.`)
 }
@@ -77,4 +79,4 @@ const userOwnsSection = async (sectionId, userId) => {
 }
 
 
-module.exports =  { findRecord, findRecords, findAll, saveRecord, findRefs, updateRecord, createProject, createSection, userOwnsSection } 
+module.exports =  { findRecord, findRecords, findAll, saveRecord, findRefs, updateRecord, createProject, createSection, createTask, userOwnsSection } 
