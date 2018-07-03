@@ -6,6 +6,7 @@ services:
     build: .
     ports:
       - "3030:3030"
+      - "27017:27017"
     links:
       - mongo
     depends_on: 

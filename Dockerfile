@@ -1,16 +1,11 @@
-FROM node
 
-# Create app directory
-WORKDIR /usr/src/app
+FROM node:latest
 
-# Install app dependencies
-COPY package.json .
+RUN mkdir /app
+WORKDIR /app
+COPY package.json /app/
+EXPOSE 3030:3030 27017:27017
 
 RUN npm install
 
-# Bundle app source
-COPY . .
-
-EXPOSE 3030
-
-CMD ["node", "server.js"]
+CMD [ "npm", "start" ]
