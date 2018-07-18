@@ -50,6 +50,7 @@ const resolvers = (models) => ({
       }
       throw new Error(`Unauthorized Action`)
     },
+
     async task(root, { id }, context) {
       const userId = getUserId(context)
       const task = await db.findRecord(models.Task, id)
@@ -138,7 +139,7 @@ const resolvers = (models) => ({
 
     async deleteProject(root, args, context) {
       const userId = getUserId(context)
-      return await db.deleteRecord(models.Project, args, userId)
+      return await db.deleteProject(args, userId)
     }
   },
 });
