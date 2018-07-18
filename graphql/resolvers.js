@@ -5,6 +5,7 @@ const { APP_SECRET, getUserId } = require('../utils')
 
 
 const resolvers = (models) => ({
+  // Relationship Resolvers ------------------------------------------------------------------------
   User: {
     async projects(user) {
       return await db.findRecords(models.Project, user.projects)
@@ -30,11 +31,8 @@ const resolvers = (models) => ({
     },
   },
 
+  // Queries --------------------------------------------------------------------------------------
   Query: {
-    getUserById(root, { id }) {
-      return db.findRecord(models.User, id)
-    },
-
     async getUserByEmail(root, { email }) {
       return await models.User.findOne({ email })
     },
@@ -52,11 +50,10 @@ const resolvers = (models) => ({
       }
       throw new Error(`Unauthorized Action`)
     },
+
     async task(root, { id }, context) {
       const userId = getUserId(context)
       const task = await db.findRecord(models.Task, id)
-      // Need to make sure they have permission for this task which means we need the project that it belongs to
-      // TODO: @nicklewanowicz see if there is a better way of doing this ie, POLR is including tasks in project request
       const section = await db.findRecord(models.Section, task.section)
       const project = await db.findRecord(models.Project, section.project)  
       if (project.owners.indexOf(userId) > -1) {
@@ -65,6 +62,8 @@ const resolvers = (models) => ({
       throw new Error(`Unauthorized Action`)
     }
   },
+
+  // Mutation --------------------------------------------------------------------------------------
   Mutation: {
     //@nicklewanowicz temporary! Will change to have server sessions
     async signup(root, args) {
@@ -133,9 +132,15 @@ const resolvers = (models) => ({
     },
 
     async updateTask(root, args, context) {
+      // TODO: authorize action with userid
       const userId = getUserId(context)
       return await db.updateRecord(models.Task, args)
     },
+
+    async deleteProject(root, args, context) {
+      const userId = getUserId(context)
+      return await db.deleteProject(args, userId)
+    }
   },
 });
 

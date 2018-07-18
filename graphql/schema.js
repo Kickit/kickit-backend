@@ -41,7 +41,6 @@ const schema = `
 
   type Query {
     me: User
-    getUserById(id: ID!): User
     getUserByEmail(email: String!): User
 
     project(id: ID!): Project
@@ -58,6 +57,8 @@ const schema = `
     createTask(section: ID!, title: String, description: String, due: Int, completed: Boolean, position: String!): Task
 
     updateTask(id: ID!, title: String, description: String, due: Int, completed: Boolean, section: ID): Task
+    
+    deleteProject(id: ID!): Project
   }
 
   schema {

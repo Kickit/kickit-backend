@@ -4,6 +4,17 @@ const Section = require('../models/section')
 const Task    = require('../models/task')
 const mongoose = require('mongoose')
 
+/* 
+    This utility contains 2 pieces:
+        1. Core Utils
+        2. Model Utils
+    
+    - Core utils are generic db functions like save, delete, update, ect. 
+    - Model utils are anything which implements a core util but still isnt generic enough to be a resolver,
+      generally these are used to provide validation but should be used sparingly. May be removed.
+*/
+
+// Core DB Utils ------------------------------------------------------------------------------
 const findRecord = async (model, id) => {
     return await model.findById(id)
 }
@@ -35,9 +46,19 @@ const updateRecord = async (model, attrs) => {
     return await record.save()
 }
 
+const deleteRecord = async (model, attrs) => {
+    let record = await findRecord(model, attrs.id)
+    record.set(attrs)
+    return await record.remove()
+}
+
+// Model DB Utils ------------------------------------------------------------------------------
+
 const createProject = async (attrs) => {
     // Todo: validate you are an owner of the project
     const record = await saveRecord(Project, attrs)
+
+    // TODO: Create core util for this
     await User.update(
         { _id: { $in: record.owners } },
         { $push: { projects: mongoose.Types.ObjectId(record._id) } }
@@ -66,6 +87,16 @@ const createTask = async (attrs) => {
     throw Error(`Task is referencing Section ${attrs.section} which doesn't exist.`)
 }
 
+const deleteProject = async (attrs, userId) => {
+    const project = await findRecord(Project, attrs.id)
+    if (project.owners.indexOf(userId) > -1) {
+        await deleteRecord(Project, attrs)
+        return project
+    }
+
+    throw Error(`Unauthorized action: Provided User doesn't have write permissions for project.`)
+}
+
 // userOwnsTask: checks user permissions to verify if theyre owner of that section
 const userOwnsSection = async (sectionId, userId) => {
     const section = await findRecord(Section, sectionId)
@@ -79,4 +110,4 @@ const userOwnsSection = async (sectionId, userId) => {
 }
 
 
-module.exports =  { findRecord, findRecords, findAll, saveRecord, findRefs, updateRecord, createProject, createSection, createTask, userOwnsSection } 
+module.exports =  { findRecord, findRecords, findAll, saveRecord, findRefs, updateRecord, deleteProject, createProject, createSection, createTask, userOwnsSection } 
