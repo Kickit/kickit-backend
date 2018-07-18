@@ -140,6 +140,11 @@ const resolvers = (models) => ({
     async deleteProject(root, args, context) {
       const userId = getUserId(context)
       return await db.deleteProject(args, userId)
+    },
+
+    async deleteTask(root, args, context) {
+      const userId = getUserId(context)
+      return await db.deleteTask(args, userId)
     }
   },
 });

@@ -59,6 +59,7 @@ const schema = `
     updateTask(id: ID!, title: String, description: String, due: Int, completed: Boolean, section: ID): Task
     
     deleteProject(id: ID!): Project
+    deleteTask(id: ID!): Task
   }
 
   schema {
