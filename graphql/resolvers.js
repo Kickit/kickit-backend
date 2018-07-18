@@ -135,6 +135,11 @@ const resolvers = (models) => ({
       const userId = getUserId(context)
       return await db.updateRecord(models.Task, args)
     },
+
+    async deleteProject(root, args, context) {
+      const userId = getUserId(context)
+      return await db.deleteRecord(models.Project, args, userId)
+    }
   },
 });
 
