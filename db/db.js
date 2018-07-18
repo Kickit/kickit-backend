@@ -46,11 +46,19 @@ const updateRecord = async (model, attrs) => {
     return await record.save()
 }
 
+const deleteRecord = async (model, attrs) => {
+    let record = await findRecord(model, attrs.id)
+    record.set(attrs)
+    return await record.remove()
+}
+
 // Model DB Utils ------------------------------------------------------------------------------
 
 const createProject = async (attrs) => {
     // Todo: validate you are an owner of the project
     const record = await saveRecord(Project, attrs)
+
+    // TODO: Create core util for this
     await User.update(
         { _id: { $in: record.owners } },
         { $push: { projects: mongoose.Types.ObjectId(record._id) } }
@@ -77,6 +85,16 @@ const createTask = async (attrs) => {
         return await saveRecord(Task, attrs)
     }
     throw Error(`Task is referencing Section ${attrs.section} which doesn't exist.`)
+}
+
+const deleteProject = async (attrs, userId) => {
+    const project = await findRecord(Project, attrs.id)
+    if (project.owners.indexOf(userId) > -1) {
+        await deleteRecord(Project, attrs)
+        return project
+    }
+
+    throw Error(`Unauthorized action: Provided User doesnt have write permissions for project.`)
 }
 
 // userOwnsTask: checks user permissions to verify if theyre owner of that section
