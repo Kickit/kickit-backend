@@ -131,6 +131,7 @@ const resolvers = (models) => ({
     },
 
     async updateTask(root, args, context) {
+      // TODO: authorize action with userid
       const userId = getUserId(context)
       return await db.updateRecord(models.Task, args)
     },
