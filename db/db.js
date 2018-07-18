@@ -94,7 +94,7 @@ const deleteProject = async (attrs, userId) => {
         return project
     }
 
-    throw Error(`Unauthorized action: Provided User doesnt have write permissions for project.`)
+    throw Error(`Unauthorized action: Provided User doesn't have write permissions for project.`)
 }
 
 const deleteTask = async (attrs, userId) => {
