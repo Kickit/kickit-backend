@@ -110,4 +110,4 @@ const userOwnsSection = async (sectionId, userId) => {
 }
 
 
-module.exports =  { findRecord, findRecords, findAll, saveRecord, findRefs, updateRecord, createProject, createSection, createTask, userOwnsSection } 
+module.exports =  { findRecord, findRecords, findAll, saveRecord, findRefs, updateRecord, deleteProject, createProject, createSection, createTask, userOwnsSection } 
