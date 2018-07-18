@@ -40,7 +40,6 @@ const schema = `
 
   type Query {
     me: User
-    getUserById(id: ID!): User
     getUserByEmail(email: String!): User
 
     project(id: ID!): Project

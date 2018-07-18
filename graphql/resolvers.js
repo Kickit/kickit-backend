@@ -31,10 +31,6 @@ const resolvers = (models) => ({
   },
 
   Query: {
-    getUserById(root, { id }) {
-      return db.findRecord(models.User, id)
-    },
-
     async getUserByEmail(root, { email }) {
       return await models.User.findOne({ email })
     },
@@ -65,6 +61,7 @@ const resolvers = (models) => ({
       throw new Error(`Unauthorized Action`)
     }
   },
+
   Mutation: {
     //@nicklewanowicz temporary! Will change to have server sessions
     async signup(root, args) {
