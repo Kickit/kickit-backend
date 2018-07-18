@@ -31,6 +31,11 @@ const taskSchema = new mongoose.Schema({
     unique: false,
     default: false,
   },
+  position: {
+    type: String,
+    unique: false,
+    default: ''
+  },
 });
 
 module.exports = mongoose.model('Task', taskSchema);

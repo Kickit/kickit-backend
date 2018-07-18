@@ -36,6 +36,7 @@ const schema = `
     created: Int!
     due: Int
     completed: Boolean!
+    position: String
   }
 
   type Query {
@@ -53,7 +54,7 @@ const schema = `
 
     createProject(owners: [ID] title: String!): Project
     createSection(project: ID, task: ID, title: String, position: Int): Section
-    createTask(section: ID!, title: String, description: String, due: Int, completed: Boolean): Task
+    createTask(section: ID!, title: String, description: String, due: Int, completed: Boolean, position: String!): Task
 
     updateTask(id: ID!, title: String, description: String, due: Int, completed: Boolean, section: ID): Task
     
