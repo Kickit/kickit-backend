@@ -97,6 +97,16 @@ const deleteProject = async (attrs, userId) => {
     throw Error(`Unauthorized action: Provided User doesnt have write permissions for project.`)
 }
 
+const deleteTask = async (attrs, userId) => {
+    const task = await findRecord(Task, attrs.id)
+    if (userOwnsSection(task.section, userId)) {
+        await deleteRecord(Task, attrs)
+        return task
+    }
+
+    throw Error(`Unauthorized action: Provided User doesn't have write permissions for task.`)
+}
+
 // userOwnsTask: checks user permissions to verify if theyre owner of that section
 const userOwnsSection = async (sectionId, userId) => {
     const section = await findRecord(Section, sectionId)
@@ -110,4 +120,4 @@ const userOwnsSection = async (sectionId, userId) => {
 }
 
 
-module.exports =  { findRecord, findRecords, findAll, saveRecord, findRefs, updateRecord, deleteProject, createProject, createSection, createTask, userOwnsSection } 
+module.exports =  { findRecord, findRecords, findAll, saveRecord, findRefs, updateRecord, deleteProject, deleteTask, createProject, createSection, createTask, userOwnsSection } 
