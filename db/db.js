@@ -4,6 +4,17 @@ const Section = require('../models/section')
 const Task    = require('../models/task')
 const mongoose = require('mongoose')
 
+/* 
+    This utility contains 2 pieces:
+        1. Core Utils
+        2. Model Utils
+    
+    - Core utils are generic db functions like save, delete, update, ect. 
+    - Model utils are anything which implements a core util but still isnt generic enough to be a resolver,
+      generally these are used to provide validation but should be used sparingly. May be removed.
+*/
+
+// Core DB Utils ------------------------------------------------------------------------------
 const findRecord = async (model, id) => {
     return await model.findById(id)
 }
@@ -34,6 +45,8 @@ const updateRecord = async (model, attrs) => {
     record.set(attrs)
     return await record.save()
 }
+
+// Model DB Utils ------------------------------------------------------------------------------
 
 const createProject = async (attrs) => {
     // Todo: validate you are an owner of the project
