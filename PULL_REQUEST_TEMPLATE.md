@@ -1,6 +1,6 @@
 <!--- Provide a general summary of your changes in the Title above -->
-- [] Feature
-- [] Issue
+- [ ] Feature
+- [ ] Issue
 
 ## Related Issue/Task
 <!--- This project only accepts pull requests related to open issues -->
