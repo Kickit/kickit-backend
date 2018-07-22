@@ -27,7 +27,6 @@ const findRecords = async (model, ids) => {
 }
 
 const findRefs = async (model, attr, id) => {
-    console.log(attr, id)
     return await model.where(attr).equals(id)
 }
 
