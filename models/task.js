@@ -6,9 +6,14 @@ const taskSchema = new mongoose.Schema({
     unique: false,
     default: ''
   },
+  project: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Project',
+    index: true
+  },
   section: { 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Section',
+    ref: 'Task',
     index: true
   },
   description: {
