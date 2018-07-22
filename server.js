@@ -12,7 +12,6 @@ const PORT = 3030
 
 const User    = require('./models/user')
 const Project = require('./models/project')
-const Section = require('./models/section')
 const Task    = require('./models/task')
 
 const myGraphQLSchema = require('./graphql/schema')
@@ -20,7 +19,7 @@ const createResolvers = require('./graphql/resolvers')
 
 const executableSchema = makeExecutableSchema({
     typeDefs: [myGraphQLSchema],
-    resolvers: createResolvers({ User, Project, Section, Task }),
+    resolvers: createResolvers({ User, Project, Task }),
 });
 
 mongoose.connect('mongodb://localhost:27017/kickit_db1');
