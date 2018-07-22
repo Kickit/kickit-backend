@@ -1,6 +1,5 @@
 const User    = require('../models/user')
 const Project = require('../models/project')
-const Section = require('../models/section')
 const Task    = require('../models/task')
 const mongoose = require('mongoose')
 
@@ -28,6 +27,7 @@ const findRecords = async (model, ids) => {
 }
 
 const findRefs = async (model, attr, id) => {
+    console.log(attr, id)
     return await model.where(attr).equals(id)
 }
 
@@ -67,24 +67,9 @@ const createProject = async (attrs) => {
       return record
 }
 
-const createSection = async (attrs) => {
-    // Todo: validate you are an owner of the project
-    const projectRef = findRecord(Project, attrs.project)
-    if (projectRef) {
-        return await saveRecord(Section, attrs)
-    }
-    throw Error(`Section is referencing Project ${attrs.project} which doesn't exist.`)
-}
-
 const createTask = async (attrs) => {
-    // Todo: validate you are an owner of the project
     attrs.created = Math.floor(new Date() / 1000)
-    
-    const sectionRef = findRecord(Section, attrs.section)
-    if (sectionRef) {
-        return await saveRecord(Task, attrs)
-    }
-    throw Error(`Task is referencing Section ${attrs.section} which doesn't exist.`)
+    return await saveRecord(Task, attrs)
 }
 
 const deleteProject = async (attrs, userId) => {
@@ -99,7 +84,7 @@ const deleteProject = async (attrs, userId) => {
 
 const deleteTask = async (attrs, userId) => {
     const task = await findRecord(Task, attrs.id)
-    if (userOwnsSection(task.section, userId)) {
+    if (userOwnsTask(task.project, userId)) {
         await deleteRecord(Task, attrs)
         return task
     }
@@ -108,10 +93,13 @@ const deleteTask = async (attrs, userId) => {
 }
 
 // userOwnsTask: checks user permissions to verify if theyre owner of that section
-const userOwnsSection = async (sectionId, userId) => {
-    const section = await findRecord(Section, sectionId)
-    const project = await findRecord(Project, section.project)
-
+const userOwnsTask = async (parentId, userId) => {
+    let project = await findRecord(Project, parentId)
+    if(!project){
+        console.log(parentId, await findRecord(Task, parentId).project)
+        project = await findRecord(Project, await findRecord(Task, parentId).project)
+    }
+    
     // check if userId is in project's owners array
     if (project.owners.indexOf(userId) > -1) {
         return true
@@ -120,4 +108,4 @@ const userOwnsSection = async (sectionId, userId) => {
 }
 
 
-module.exports =  { findRecord, findRecords, findAll, saveRecord, findRefs, updateRecord, deleteProject, deleteTask, createProject, createSection, createTask, userOwnsSection } 
+module.exports =  { findRecord, findRecords, findAll, saveRecord, findRefs, updateRecord, deleteProject, deleteTask, createProject, createTask, userOwnsTask } 
