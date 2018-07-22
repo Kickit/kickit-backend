@@ -44,7 +44,7 @@ const schema = `
     signup(first: String!, last: String!, email: String!, password: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
 
-    createProject(owners: [ID] title: String!): Project
+    createProject(owners: [ID], title: String!): Project
     createTask(project: ID, section: ID, position: String!, title: String, description: String, due: Int, completed: Boolean): Task
 
     updateTask(id: ID!, title: String, description: String, due: Int, completed: Boolean, section: ID): Task
