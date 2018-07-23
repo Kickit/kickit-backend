@@ -14,7 +14,7 @@ const resolvers = (models) => ({
 
   Project: {
     async sections(project) {
-      return await db.findRefs(models.Task, 'project', project.id)
+      return await db.findParentTasks(project.id)
     },
   },
 
@@ -108,12 +108,14 @@ const resolvers = (models) => ({
 
     async createTask(root, args, context) {
       const userId = getUserId(context)
-      const section = null
-      if(args.section){
-        section = await db.findRecord(models.Task, args.section)
+
+      if (args.project) {
+        args.project = args.project
+      } else {
+        args.project = await db.projectFor(args)
       }
-      const parent = section ? section.id : args.project
-      if (await db.userOwnsTask(parent, userId)) {
+      
+      if (await db.userOwnsTask(args.project, userId)) {
         return await db.createTask(args)
       }
 
