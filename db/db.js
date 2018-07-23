@@ -94,11 +94,6 @@ const deleteTask = async (attrs, userId) => {
 // userOwnsTask: checks user permissions to verify if theyre owner of that section
 const userOwnsTask = async (parentId, userId) => {
     let project = await findRecord(Project, parentId)
-    if(!project){
-        console.log(parentId, await findRecord(Task, parentId).project)
-        project = await findRecord(Project, await findRecord(Task, parentId).project)
-    }
-    
     // check if userId is in project's owners array
     if (project.owners.indexOf(userId) > -1) {
         return true
@@ -106,5 +101,14 @@ const userOwnsTask = async (parentId, userId) => {
     else return false
 }
 
+// TODO: Might not be necessary going forward
+const projectFor = async (task) => {
+    while(!task.project) {
+        task = await findRecord(Task, task.section)
+    }
+    return await task.project
+    
+}
 
-module.exports =  { findRecord, findRecords, findAll, saveRecord, findRefs, updateRecord, deleteProject, deleteTask, createProject, createTask, userOwnsTask } 
+
+module.exports =  { findRecord, findRecords, findAll, projectFor, saveRecord, findRefs, findParentTasks, updateRecord, deleteProject, deleteTask, createProject, createTask, userOwnsTask } 
