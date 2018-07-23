@@ -53,6 +53,11 @@ const deleteRecord = async (model, attrs) => {
 
 // Model DB Utils ------------------------------------------------------------------------------
 
+// TODO: See if there is a better way to do this. ie, make find refs accept an array of key/values
+const findParentTasks = async (id) => {
+    return await Task.where('project').equals(id).where('section').equals(null)
+}
+
 const createProject = async (attrs) => {
     // Todo: validate you are an owner of the project
     const record = await saveRecord(Project, attrs)
