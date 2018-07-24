@@ -16,7 +16,7 @@ const projectSchema = new mongoose.Schema({
   public: {
     type: String,
     enum: ['NONE', 'READ', 'READ/WRITE'],
-    default: 'READ',
+    default: 'NONE',
     unique: false,
   },
   owners: [{
