@@ -13,6 +13,12 @@ const projectSchema = new mongoose.Schema({
     unique: false,
     required: true,
   },
+  public: {
+    type: String,
+    enum: ['NONE', 'READ', 'READ/WRITE'],
+    default: 'READ',
+    unique: false,
+  },
   owners: [{
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'User' 
