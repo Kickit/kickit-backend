@@ -16,6 +16,7 @@ const schema = `
   type Project {
     id: ID!
     title: String
+    public: String
     created: Int!
     owners: [User]
     sections: [Section]
@@ -52,7 +53,7 @@ const schema = `
     signup(first: String!, last: String!, email: String!, password: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
 
-    createProject(owners: [ID] title: String!): Project
+    createProject(owners: [ID] title: String! public: String): Project
     createSection(project: ID, task: ID, title: String, position: Int): Section
     createTask(section: ID!, title: String, description: String, due: Int, completed: Boolean, position: String!): Task
 
