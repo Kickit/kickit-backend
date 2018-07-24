@@ -107,6 +107,10 @@ const resolvers = (models) => ({
     },
 
     async createProject(root, args, context) {
+      if (args.owners === undefined) {
+        args.owners = []
+      }
+      
       const userId = getUserId(context)
       args.owners.push(userId)
       // args.owners= JSON.stringify(args.owners)
