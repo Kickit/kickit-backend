@@ -19,14 +19,7 @@ const schema = `
     public: String
     created: Int!
     owners: [User]
-    sections: [Section]
-  }
-
-  type Section {
-    id: ID!
-    title: String
-    position: Int
-    tasks: [Task]
+    sections: [Task]
   }
 
   type Task {
@@ -45,7 +38,6 @@ const schema = `
     getUserByEmail(email: String!): User
 
     project(id: ID!): Project
-    section(id: ID!): Section
     task(id: ID!): Task
   }
 
@@ -53,9 +45,9 @@ const schema = `
     signup(first: String!, last: String!, email: String!, password: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
 
-    createProject(owners: [ID] title: String! public: String): Project
-    createSection(project: ID, task: ID, title: String, position: Int): Section
-    createTask(section: ID!, title: String, description: String, due: Int, completed: Boolean, position: String!): Task
+    createProject(owners: [ID], title: String!): Project
+    createTask(project: ID, section: ID, position: String!, title: String, description: String, due: Int, completed: Boolean): Task
+
 
     updateTask(id: ID!, title: String, description: String, due: Int, completed: Boolean, section: ID): Task
     

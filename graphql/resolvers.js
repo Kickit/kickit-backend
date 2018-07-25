@@ -14,20 +14,13 @@ const resolvers = (models) => ({
 
   Project: {
     async sections(project) {
-      return await db.findRefs(models.Section, 'project', project.id)
-    },
-  },
-
-  Section: {
-    async tasks(section) {
-      return await db.findRefs(models.Task, 'section', section.id)
+      return await db.findParentTasks(project.id)
     },
   },
 
   Task: {
     async tasks(task) {
-      const section = await db.findRefs(models.Section, 'task', task.id)
-      return await db.findRefs(models.task, 'section', section.id)
+      return await db.findRefs(models.Task, 'section', task.id)
     },
   },
 
@@ -54,8 +47,7 @@ const resolvers = (models) => ({
     async task(root, { id }, context) {
       const userId = getUserId(context)
       const task = await db.findRecord(models.Task, id)
-      const section = await db.findRecord(models.Section, task.section)
-      const project = await db.findRecord(models.Project, section.project)  
+      const project = await db.findRecord(models.Project, task.project)  
       if (project.owners.indexOf(userId) > -1 || project.public.includes('READ')) {
         return task
       }
@@ -118,27 +110,30 @@ const resolvers = (models) => ({
       return await db.createProject(args)
     },
 
-    async createSection(root, args) {
-      if (args.position === undefined) {
-        const sections = await db.findRefs(models.Section, 'project', args.project)
-        console.log(sections)
-        args.position = sections.length
-      }
-      return await db.createSection(args)
-    },
-
     async createTask(root, args, context) {
       const userId = getUserId(context)
-      if (await db.userOwnsSection(args.section, userId)) {
+
+      if (args.project) {
+        args.project = args.project
+      } else {
+        args.project = await db.projectFor(args)
+      }
+      
+      if (await db.userOwnsTask(args.project, userId)) {
         return await db.createTask(args)
       }
+
       throw new Error('Unauthorized Action')
     },
 
     async updateTask(root, args, context) {
-      // TODO: authorize action with userid
       const userId = getUserId(context)
-      return await db.updateRecord(models.Task, args)
+      const task = await db.findRecord(models.Task, args.id)
+      
+      if (await db.userOwnsTask(task.project, userId)) {
+        return await db.updateRecord(models.Task, args)
+      }
+      throw new Error('Unauthorized Action')
     },
 
     async deleteProject(root, args, context) {
