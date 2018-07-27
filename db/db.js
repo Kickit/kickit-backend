@@ -78,6 +78,13 @@ const createTask = async (attrs) => {
 
 const deleteProject = async (attrs, userId) => {
     const project = await findRecord(Project, attrs.id)
+    const tasks = await findRefs(Task, 'project', project.id)
+  
+    for (i in tasks) {
+        task = tasks[i]
+        await deleteTask(task, userId)
+    }
+
     if (project.owners.indexOf(userId) > -1) {
         await deleteRecord(Project, attrs)
         return project
