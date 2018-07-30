@@ -16,6 +16,7 @@ const schema = `
   type Project {
     id: ID!
     title: String
+    public: String
     created: Int!
     owners: [User]
     sections: [Task]
@@ -46,6 +47,7 @@ const schema = `
 
     createProject(owners: [ID], title: String!): Project
     createTask(project: ID, section: ID, position: String!, title: String, description: String, due: Int, completed: Boolean): Task
+
 
     updateTask(id: ID!, title: String, description: String, due: Int, completed: Boolean, section: ID): Task
     
