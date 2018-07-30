@@ -2,6 +2,7 @@
 
 const Hapi = require('hapi')
 const { graphqlHapi, graphiqlHapi } = require('apollo-server-hapi')
+const hapiPlayground = require('graphql-playground-middleware-hapi').default
 const mongoose = require('mongoose')
 const { makeExecutableSchema } = require('graphql-tools');
 const { getUserId } = require('./utils')
@@ -20,7 +21,35 @@ const createResolvers = require('./graphql/resolvers')
 const executableSchema = makeExecutableSchema({
     typeDefs: [myGraphQLSchema],
     resolvers: createResolvers({ User, Project, Task }),
+    playground: true,
 });
+
+const api = {
+  plugin: graphqlHapi,
+  options: {
+    path: '/graphql',
+    graphqlOptions: request => ({
+      schema: executableSchema,
+      context: request 
+    }),
+    route: {
+      cors: true,
+    },
+  },
+}
+
+
+const graphiql = {
+  plugin: hapiPlayground,
+  options: {
+    path: '/graphiql',
+    passHeader: '"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YjFjMzg1NGQ3Yzk4ZDNkMzJmOTYxZmQiLCJpYXQiOjE1Mjg1NzYwODR9.CVF0DRe24HT7ZLzG7K6v_6WYUcGx5wu-lOWIietGb5k"',
+    endpoint: '/graphql',
+  },
+}
+
+const endpoints = [api, graphiql]
+
 
 mongoose.connect('mongodb://localhost:27017/kickit_db1');
 
@@ -30,32 +59,8 @@ const init = async () => {
     port: PORT,
   })
 
-  await server.register({
-    plugin: graphqlHapi,
-    options: {
-      path: '/graphql',
-      graphqlOptions: request => ({
-        schema: executableSchema,
-        context: request 
-      }),
-      route: {
-        cors: true,
-      },
-    },
-  })
-
-  await server.register({
-    plugin: graphiqlHapi,
-    options: {
-      path: '/graphiql',
-      graphiqlOptions: {
-        passHeader: '"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YjFjMzg1NGQ3Yzk4ZDNkMzJmOTYxZmQiLCJpYXQiOjE1Mjg1NzYwODR9.CVF0DRe24HT7ZLzG7K6v_6WYUcGx5wu-lOWIietGb5k"',
-        endpointURL: '/graphql',
-      },
-    },
-  })
-
   try {
+    await server.register(endpoints)
     await server.start()
   } catch (err) {
     console.log(`Error while starting server: ${err.message}`)
