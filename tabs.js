@@ -1,6 +1,12 @@
 // This is where the tabs for the graphiql interface are defined. 
 // Feel free to add more tabs for more default mutations and queries.
 
+// endpoint: string
+// query: string
+// variables?: string
+// responses?: string[]
+// headers?: { [key: string]: string }
+
 module.exports = [{
   query: '# Welcome to the Kickit GraphiQL interface!',
   headers: {
