@@ -44,7 +44,8 @@ const graphiql = {
   plugin: hapiPlayground,
   options: {
     path: '/graphiql',
-    tabs
+    tabs,
+    endpoint: '/graphql'
   },
 }
 
