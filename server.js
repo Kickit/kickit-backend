@@ -6,6 +6,7 @@ const hapiPlayground = require('graphql-playground-middleware-hapi').default
 const mongoose = require('mongoose')
 const { makeExecutableSchema } = require('graphql-tools');
 const { getUserId } = require('./utils')
+const tabs = require('./tabs.js')
 
 const HOST = 'localhost'
 const PORT = 3030
@@ -21,7 +22,7 @@ const createResolvers = require('./graphql/resolvers')
 const executableSchema = makeExecutableSchema({
     typeDefs: [myGraphQLSchema],
     resolvers: createResolvers({ User, Project, Task }),
-    playground: true,
+    introspection: true,
 });
 
 const api = {
@@ -30,7 +31,7 @@ const api = {
     path: '/graphql',
     graphqlOptions: request => ({
       schema: executableSchema,
-      context: request 
+      context: request
     }),
     route: {
       cors: true,
@@ -43,8 +44,7 @@ const graphiql = {
   plugin: hapiPlayground,
   options: {
     path: '/graphiql',
-    passHeader: '"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YjFjMzg1NGQ3Yzk4ZDNkMzJmOTYxZmQiLCJpYXQiOjE1Mjg1NzYwODR9.CVF0DRe24HT7ZLzG7K6v_6WYUcGx5wu-lOWIietGb5k"',
-    endpoint: '/graphql',
+    tabs
   },
 }
 
