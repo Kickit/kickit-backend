@@ -25,4 +25,9 @@ const projectSchema = new mongoose.Schema({
   }]
 });
 
+projectSchema.pre('remove', function(next) {
+    // Delete all project tasks prior to deleting the project
+    this.model('Task').remove({project: this._id}, next)
+});
+
 module.exports = mongoose.model('Project', projectSchema);
