@@ -25,10 +25,8 @@ const projectSchema = new mongoose.Schema({
   }]
 });
 
-// TODO: Make sure that this actually goes ahead and deletes at the tasks
-// TODO: Investigate whether or not we would want to do it all sequentially vs. in parallel
 projectSchema.pre('remove', function(next) {
-    console.log(this)
+    // Delete all project tasks prior to deleting the project
     this.model('Task').remove({project: this._id}, next)
 });
 
