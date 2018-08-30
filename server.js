@@ -8,7 +8,7 @@ const { makeExecutableSchema } = require('graphql-tools');
 const { getUserId } = require('./utils')
 const tabs = require('./tabs.js')
 
-const HOST = 'localhost'
+const HOST = 'server'
 const PORT = 3030
 
 
@@ -51,9 +51,6 @@ const graphiql = {
 
 const endpoints = [api, graphiql]
 
-
-mongoose.connect('mongodb://localhost:27017/kickit_db1');
-
 const init = async () => {
   const server = Hapi.server({
     host: HOST,
@@ -71,9 +68,22 @@ const init = async () => {
 }
 
 process.on('unhandledRejection', (err) => {
-
     console.log(err)
     process.exit(1)
 })
 
-init()
+const connectToMongo = async () => {
+    try {
+        await mongoose.connect('mongodb://mongo:27017/kickit_db1', (err) => {
+            if (err) {
+                setTimeout(connectToMongo, 5000)
+            } else {
+                init()
+            }
+        })
+    } catch (err) {
+        console.error('Error while connecting to mongo DB - retrying in 5 seconds...')
+    }
+}
+
+connectToMongo()

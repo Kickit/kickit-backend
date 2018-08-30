@@ -1,11 +1,13 @@
-
+# TODO: We don't always want to pull the latest for stability
 FROM node:latest
 
-RUN mkdir /app
+# Create image directory structure
+RUN mkdir /app 
+COPY . /app
+
+# Initialize the server dependencies
 WORKDIR /app
-COPY package.json /app/
-EXPOSE 3030:3030 27017:27017
+RUN npm install 
 
-RUN npm install
-
+# Start the server
 CMD [ "npm", "start" ]
