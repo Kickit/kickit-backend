@@ -1,20 +1,18 @@
 version: "3"
 services:
-  app:
-    container_name: app
+  server:
+    container_name: server
     restart: always
     build: .
     ports:
       - "3030:3030"
-      - "27017:27017"
-    links:
-      - mongo
-    depends_on: 
+    depends_on:
       - mongo
   mongo:
     container_name: mongo
-    image: mongo
+    restart: always
+    build: ./mongo_docker
     volumes:
       - ./data:/data/db
-    ports:
-      - "27017:27017"
+    expose:
+      - "27017"

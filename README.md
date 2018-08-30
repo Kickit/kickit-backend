@@ -14,13 +14,13 @@ There has also been a implementation done in Golang but development has been pau
 #### Prerequisites:
 - MongoDB
 - NodeJS
+- Docker / Docker Compose
 
 #### Run the following commands to install:
 
 - `git clone \<repo url\>`
 - `cd kickit-backend`
-- `yarn`
-- `yarn start`
+- `docker-compose up`
 - the server will be available at localhost:3030
 
 #### Routes for development:
