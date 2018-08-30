@@ -26,6 +26,7 @@ const schema = `
     id: ID!
     title: String!
     description: String
+    section: ID
     tasks: [Task]
     created: Int!
     due: Int
